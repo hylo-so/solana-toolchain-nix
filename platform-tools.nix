@@ -16,7 +16,7 @@ let
     x86_64-linux = fetchurl {
       url =
         "https://github.com/anza-xyz/platform-tools/releases/download/${version}/platform-tools-linux-x86_64.tar.bz2";
-      hash = "sha256-vHeOPs7B7WptUJ/mVvyt7ue+MqfqAsbwAHM+xlN/tgQ=";
+      hash = "sha256-qdMVf5N9X2+vQyGjWoA14PgnEUpmOwFQ20kuiT7CdZc=";
     };
   }.${system} or (throw "Unsupported system: ${system}");
 in stdenv.mkDerivation {
