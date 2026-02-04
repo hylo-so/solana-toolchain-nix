@@ -20,6 +20,17 @@
             callPackage ./platform-tools.nix { inherit system; };
           solanaCli = callPackage ./solana-cli.nix { inherit system; };
           sbfSdk = callPackage ./sbf-sdk.nix { inherit platformTools; };
+          sbfEnvHook = makeSetupHook {
+            name = "sbf-env-hook";
+            substitutions = {
+              sbfSdkPath = "${sbfSdk}";
+              rustc = "${platformTools}/rust/bin/rustc";
+              cc = "${platformTools}/llvm/bin/clang";
+              ar = "${platformTools}/llvm/bin/llvm-ar";
+              objdump = "${platformTools}/llvm/bin/llvm-objdump";
+              objcopy = "${platformTools}/llvm/bin/llvm-objcopy";
+            };
+          } ./sbf-env-hook.sh;
         in {
           packages = {
             platform-tools = platformTools;
@@ -28,14 +39,7 @@
           };
 
           devShells.default = mkShell {
-            packages = [ solanaCli ];
-
-            SBF_SDK_PATH = "${sbfSdk}";
-            RUSTC = "${platformTools}/rust/bin/rustc";
-            CC = "${platformTools}/llvm/bin/clang";
-            AR = "${platformTools}/llvm/bin/llvm-ar";
-            OBJDUMP = "${platformTools}/llvm/bin/llvm-objdump";
-            OBJCOPY = "${platformTools}/llvm/bin/llvm-objcopy";
+            nativeBuildInputs = [ sbfEnvHook solanaCli ];
           };
         };
     };

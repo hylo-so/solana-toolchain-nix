@@ -1,0 +1,6 @@
+export SBF_SDK_PATH="@sbfSdkPath@"
+export RUSTC="@rustc@"
+export CC="@cc@"
+export AR="@ar@"
+export OBJDUMP="@objdump@"
+export OBJCOPY="@objcopy@"
