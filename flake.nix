@@ -14,12 +14,17 @@
         [ "aarch64-darwin" "aarch64-linux" "x86_64-darwin" "x86_64-linux" ];
 
       perSystem = { config, self', inputs', pkgs, system, ... }:
-        with import nixpkgs { inherit system; }; {
+        with import nixpkgs { inherit system; };
+        let
+          platformTools =
+            callPackage ./nix/platform-tools.nix { inherit system; };
+          solanaCli = callPackage ./nix/solana-cli.nix { inherit system; };
+          sbfSdk = callPackage ./nix/sbf-sdk.nix { inherit platformTools; };
+        in {
           packages = {
-            platform-tools =
-              callPackage ./nix/platform-tools.nix { inherit system; };
-            solana-cli = callPackage ./nix/solana-cli.nix { inherit system; };
-            sbf-sdk = callPackage ./nix/sbf-sdk.nix { inherit platformTools; };
+            platform-tools = platformTools;
+            solana-cli = solanaCli;
+            sbf-sdk = sbfSdk;
           };
 
           devShells.default = mkShell {
