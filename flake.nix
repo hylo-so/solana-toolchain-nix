@@ -16,8 +16,7 @@
       perSystem = { config, self', inputs', pkgs, system, ... }:
         with import nixpkgs { inherit system; };
         let
-          platformTools =
-            callPackage ./platform-tools.nix { inherit system; };
+          platformTools = callPackage ./platform-tools.nix { inherit system; };
           solanaCli = callPackage ./solana-cli.nix { inherit system; };
           sbfSdk = callPackage ./sbf-sdk.nix { inherit platformTools; };
           anchor = callPackage ./anchor.nix { inherit (pkgs) anchor; };
