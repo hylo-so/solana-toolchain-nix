@@ -1,4 +1,5 @@
-{ anchor, fetchFromGitHub, rustPlatform, pkg-config, openssl, }:
+{ anchor, fetchFromGitHub, rustPlatform, pkg-config, openssl, lib, stdenv
+, udev, }:
 anchor.overrideAttrs (old: rec {
   version = "0.32.1";
   src = fetchFromGitHub {
@@ -15,5 +16,6 @@ anchor.overrideAttrs (old: rec {
   };
   OPENSSL_NO_VENDOR = "1";
   nativeBuildInputs = old.nativeBuildInputs ++ [ pkg-config ];
-  buildInputs = old.buildInputs ++ [ openssl ];
+  buildInputs = old.buildInputs ++ [ openssl ]
+    ++ lib.optionals stdenv.isLinux [ udev ];
 })
