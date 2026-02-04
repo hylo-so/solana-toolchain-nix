@@ -17,9 +17,9 @@
         with import nixpkgs { inherit system; };
         let
           platformTools =
-            callPackage ./nix/platform-tools.nix { inherit system; };
-          solanaCli = callPackage ./nix/solana-cli.nix { inherit system; };
-          sbfSdk = callPackage ./nix/sbf-sdk.nix { inherit platformTools; };
+            callPackage ./platform-tools.nix { inherit system; };
+          solanaCli = callPackage ./solana-cli.nix { inherit system; };
+          sbfSdk = callPackage ./sbf-sdk.nix { inherit platformTools; };
         in {
           packages = {
             platform-tools = platformTools;
