@@ -23,5 +23,6 @@ in stdenv.mkDerivation {
     chmod -R u+w $out
     mkdir -p $out/dependencies
     ln -s ${platformTools} $out/dependencies/platform-tools
+    printf '#!/usr/bin/env bash\nexit 0\n' > $out/scripts/install.sh
   '';
 }
