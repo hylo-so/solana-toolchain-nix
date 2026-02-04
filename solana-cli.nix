@@ -16,7 +16,7 @@ let
     x86_64-linux = fetchurl {
       url =
         "https://github.com/anza-xyz/agave/releases/download/v${version}/solana-release-x86_64-unknown-linux-gnu.tar.bz2";
-      hash = "sha256-3F9bt0RlVEcFZLLYofGyH+KIw5Z/WbV9Y2UOQdNY7bs=";
+      hash = "sha256-xDU5699pQkcui4djXW6lX0KKUePQIZ97b3IPxrGfreA=";
     };
   }.${system} or (throw "Unsupported system: ${system}");
 in stdenv.mkDerivation {
