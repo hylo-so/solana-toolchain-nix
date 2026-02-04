@@ -20,6 +20,7 @@
           solanaCli = callPackage ./solana-cli.nix { inherit system; };
           sbfSdk = callPackage ./sbf-sdk.nix { inherit platformTools; };
           anchor = callPackage ./anchor.nix { inherit (pkgs) anchor; };
+          cargoWrapper = callPackage ./cargo-wrapper.nix { inherit (pkgs) cargo; };
           sbfEnvHook = makeSetupHook {
             name = "sbf-env-hook";
             substitutions = {
@@ -36,12 +37,13 @@
             platform-tools = platformTools;
             solana-cli = solanaCli;
             sbf-sdk = sbfSdk;
+            cargo-wrapper = cargoWrapper;
             inherit anchor;
           };
 
           devShells.default = mkShell {
             nativeBuildInputs = [ sbfEnvHook ];
-            packages = [ solanaCli anchor ];
+            packages = [ solanaCli anchor cargoWrapper ];
           };
         };
     };
