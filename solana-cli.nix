@@ -1,4 +1,5 @@
-{ fetchurl, lib, stdenv, system, autoPatchelfHook, openssl }:
+{ fetchurl, lib, stdenv, system, autoPatchelfHook, openssl
+, udev ? null }:
 let
   version = "2.3.13";
 
@@ -27,7 +28,16 @@ in stdenv.mkDerivation {
   nativeBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [
     autoPatchelfHook
   ];
-  buildInputs = [ openssl ];
+  buildInputs = [ openssl ]
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
+      stdenv.cc.cc.lib
+      udev
+    ];
+  autoPatchelfIgnoreMissingDeps = [
+    "libsgx_uae_service.so"
+    "libsgx_urts.so"
+    "libOpenCL.so.1"
+  ];
   dontStrip = true;
   installPhase = ''
     mkdir -p $out
