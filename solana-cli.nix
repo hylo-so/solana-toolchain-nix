@@ -1,4 +1,4 @@
-{ fetchurl, stdenv, system, }:
+{ fetchurl, lib, stdenv, system, autoPatchelfHook, openssl }:
 let
   version = "2.3.13";
 
@@ -24,9 +24,26 @@ in stdenv.mkDerivation {
   inherit version;
   inherit src;
   sourceRoot = "solana-release";
-  dontFixup = true;
+  nativeBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [
+    autoPatchelfHook
+  ];
+  buildInputs = [ openssl ];
+  dontStrip = true;
   installPhase = ''
     mkdir -p $out
     cp -r bin $out/
+  '';
+  postFixup = lib.optionalString stdenv.hostPlatform.isDarwin ''
+    for f in $out/bin/*; do
+      if [ -f "$f" ] && otool -L "$f" 2>/dev/null | grep -q homebrew; then
+        install_name_tool \
+          -change /opt/homebrew/opt/openssl@3/lib/libssl.3.dylib \
+                  ${openssl.out}/lib/libssl.dylib \
+          -change /opt/homebrew/opt/openssl@3/lib/libcrypto.3.dylib \
+                  ${openssl.out}/lib/libcrypto.dylib \
+          "$f"
+        /usr/bin/codesign --force --sign - "$f"
+      fi
+    done
   '';
 }
