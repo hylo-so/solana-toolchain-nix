@@ -11,7 +11,7 @@ Exports three packages and a dev shell that sets all required environment variab
 ## Build Commands
 
 ```bash
-nix build .#platform-tools   # Rust + LLVM for SBF (v1.48)
+nix build .#platform-tools   # Rust + LLVM for SBF (v1.54)
 nix build .#solana-cli        # Solana CLI tools (v2.3.13)
 nix build .#sbf-sdk           # SBF SDK directory layout
 nix flake check               # Validate flake syntax and evaluate packages
