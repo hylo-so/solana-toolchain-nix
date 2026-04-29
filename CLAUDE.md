@@ -12,7 +12,7 @@ Exports three packages and a dev shell that sets all required environment variab
 
 ```bash
 nix build .#platform-tools   # Rust + LLVM for SBF (v1.54)
-nix build .#solana-cli        # Solana CLI tools (v2.3.13)
+nix build .#solana-cli        # Solana CLI tools (v3.1.14)
 nix build .#sbf-sdk           # SBF SDK directory layout
 nix flake check               # Validate flake syntax and evaluate packages
 nix develop                   # Enter dev shell with all env vars set

@@ -10,9 +10,9 @@ let
   agaveSrc = fetchFromGitHub {
     owner = "anza-xyz";
     repo = "agave";
-    rev = "v2.3.13";
+    rev = "v3.1.14";
     sparseCheckout = [ "platform-tools-sdk/sbf" ];
-    hash = "sha256-gPTWjCkQPgpQTAa4A9txd2uotU2vh1YOaag+22sbYBE=";
+    hash = "sha256-As22yUzo7xSGxdw+lmn6uHb1Pn5BeB1Abm9YVvabBHI=";
   };
 in stdenv.mkDerivation {
   pname = "sbf-sdk";
