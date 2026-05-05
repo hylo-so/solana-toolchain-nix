@@ -1,23 +1,23 @@
 { fetchurl, lib, stdenv, system, autoPatchelfHook, openssl
 , udev ? null }:
 let
-  version = "2.3.13";
+  version = "3.1.14";
 
   src = {
     aarch64-darwin = fetchurl {
       url =
         "https://github.com/anza-xyz/agave/releases/download/v${version}/solana-release-aarch64-apple-darwin.tar.bz2";
-      hash = "sha256-sgRfLCyoyXuCczutpsnBG0YZbBrNjwDjN0Kn0sIGChI=";
+      hash = "sha256-VM/CaAvWQm/aBGGe4Bkz9ApknIBW86Ybog3FTdQn6+0=";
     };
     x86_64-darwin = fetchurl {
       url =
         "https://github.com/anza-xyz/agave/releases/download/v${version}/solana-release-x86_64-apple-darwin.tar.bz2";
-      hash = "sha256-fuJa2McNlzcir5KCbBG3Ne99ud21kmfMAYFzTaUKLa8=";
+      hash = "sha256-43aO0B2qHjz8Aq8+PrOWzsLUipns+AzV173/UQ+AjR8=";
     };
     x86_64-linux = fetchurl {
       url =
         "https://github.com/anza-xyz/agave/releases/download/v${version}/solana-release-x86_64-unknown-linux-gnu.tar.bz2";
-      hash = "sha256-xDU5699pQkcui4djXW6lX0KKUePQIZ97b3IPxrGfreA=";
+      hash = "sha256-Bvl8BlzJd8vsLxP/ybydO5L+9IVDH8s3Ciad5pUy71E=";
     };
   }.${system} or (throw "Unsupported system: ${system}");
 in stdenv.mkDerivation {
