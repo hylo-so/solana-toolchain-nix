@@ -2,10 +2,8 @@
   description = "Solana toolchain packaged with Nix";
 
   inputs = {
-    nixpkgs.url =
-      "github:NixOS/nixpkgs/b6804236c328e245d0814167472405b35addc350";
-    flake-parts.url =
-      "github:hercules-ci/flake-parts/9126214d0a59633752a136528f5f3b9aa8565b7d";
+    nixpkgs.url = "github:NixOS/nixpkgs";
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
   outputs = inputs@{ self, nixpkgs, flake-parts, }:
@@ -20,7 +18,8 @@
           solanaCli = callPackage ./solana-cli.nix { inherit system; };
           sbfSdk = callPackage ./sbf-sdk.nix { inherit platformTools; };
           anchor = callPackage ./anchor.nix { inherit (pkgs) anchor; };
-          cargoWrapper = callPackage ./cargo-wrapper.nix { inherit (pkgs) cargo; };
+          cargoWrapper =
+            callPackage ./cargo-wrapper.nix { inherit (pkgs) cargo; };
           sbfEnvHook = makeSetupHook {
             name = "sbf-env-hook";
             substitutions = {
