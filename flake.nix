@@ -16,14 +16,13 @@
         let
           platformTools = callPackage ./platform-tools.nix { inherit system; };
           solanaCli = callPackage ./solana-cli.nix { inherit system; };
-          sbfSdk = callPackage ./sbf-sdk.nix { inherit platformTools; };
           anchor = callPackage ./anchor.nix { inherit (pkgs) anchor; };
+          cargoBuildSbf = callPackage ./cargo-build-sbf.nix { };
           cargoWrapper =
             callPackage ./cargo-wrapper.nix { inherit (pkgs) cargo; };
           sbfEnvHook = makeSetupHook {
             name = "sbf-env-hook";
             substitutions = {
-              sbfSdkPath = "${sbfSdk}";
               rustc = "${platformTools}/rust/bin/rustc";
               cc = "${platformTools}/llvm/bin/clang";
               ar = "${platformTools}/llvm/bin/llvm-ar";
@@ -35,14 +34,24 @@
           packages = {
             platform-tools = platformTools;
             solana-cli = solanaCli;
-            sbf-sdk = sbfSdk;
+            cargo-build-sbf = cargoBuildSbf;
             cargo-wrapper = cargoWrapper;
             inherit anchor;
           };
 
           devShells.default = mkShell {
             nativeBuildInputs = [ sbfEnvHook ];
-            packages = [ solanaCli anchor cargoWrapper ];
+            packages = [ solanaCli anchor cargoWrapper cargoBuildSbf ];
+            shellHook = ''
+              export PATH=${cargoBuildSbf}/bin''${PATH:+:}$PATH
+              if [[ -n "''${HOME:-}" ]]; then
+                tools_dest="$HOME/.cache/solana/${platformTools.version}/platform-tools"
+                mkdir -p "$(dirname "$tools_dest")"
+                if [[ -L "$tools_dest" || ! -e "$tools_dest" ]]; then
+                  ln -sfn ${platformTools} "$tools_dest"
+                fi
+              fi
+            '';
           };
         };
     };
