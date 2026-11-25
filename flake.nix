@@ -43,7 +43,6 @@
             nativeBuildInputs = [ sbfEnvHook ];
             packages = [ solanaCli anchor cargoWrapper cargoBuildSbf ];
             shellHook = ''
-              export PATH=${cargoBuildSbf}/bin''${PATH:+:}$PATH
               if [[ -n "''${HOME:-}" ]]; then
                 tools_dest="$HOME/.cache/solana/${platformTools.version}/platform-tools"
                 mkdir -p "$(dirname "$tools_dest")"
