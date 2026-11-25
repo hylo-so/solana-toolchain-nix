@@ -1,4 +1,5 @@
-{ rustPlatform, fetchFromGitHub, writeShellScriptBin, symlinkJoin, }:
+{ platformTools, rustPlatform, fetchFromGitHub, writeShellScriptBin
+, symlinkJoin, }:
 let
   version = "4.4.0";
   unwrapped = rustPlatform.buildRustPackage {
@@ -13,6 +14,16 @@ let
     };
 
     cargoHash = "sha256-2SiTdgBUmnvpMnxif+1TKvZLvraYQGKTQ3B3FqNvOoQ=";
+
+    postPatch = ''
+      grep --quiet --fixed-strings \
+        'DEFAULT_PLATFORM_TOOLS_VERSION: &str = "${platformTools.version}"' \
+        cargo-build-sbf/src/toolchain.rs || {
+        echo "cargo-build-sbf ${version} does not default to" \
+          "platform-tools ${platformTools.version}" >&2
+        exit 1
+      }
+    '';
 
     cargoBuildFlags = [ "-p" "cargo-build-sbf" ];
     doCheck = false;

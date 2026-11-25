@@ -17,7 +17,8 @@
           platformTools = callPackage ./platform-tools.nix { inherit system; };
           solanaCli = callPackage ./solana-cli.nix { inherit system; };
           anchor = callPackage ./anchor.nix { inherit (pkgs) anchor; };
-          cargoBuildSbf = callPackage ./cargo-build-sbf.nix { };
+          cargoBuildSbf =
+            callPackage ./cargo-build-sbf.nix { inherit platformTools; };
           cargoWrapper =
             callPackage ./cargo-wrapper.nix { inherit (pkgs) cargo; };
           sbfEnvHook = makeSetupHook {
