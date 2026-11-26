@@ -1,4 +1,4 @@
-{ platformTools, rustPlatform, fetchFromGitHub, }:
+{ platformTools, rustPlatform, fetchFromGitHub, pkg-config, openssl, }:
 rustPlatform.buildRustPackage rec {
   pname = "cargo-build-sbf";
   version = "4.4.0";
@@ -21,6 +21,10 @@ rustPlatform.buildRustPackage rec {
       exit 1
     }
   '';
+
+  OPENSSL_NO_VENDOR = "1";
+  nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ openssl ];
 
   cargoBuildFlags = [ "-p" "cargo-build-sbf" ];
   doCheck = false;
