@@ -42,6 +42,7 @@ in stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out
     cp -r bin $out/
+    rm $out/bin/cargo-build-sbf $out/bin/cargo-test-sbf
   '';
   postFixup = lib.optionalString stdenv.hostPlatform.isDarwin ''
     for f in $out/bin/*; do

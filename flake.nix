@@ -17,7 +17,8 @@
           platformTools = callPackage ./platform-tools.nix { inherit system; };
           solanaCli = callPackage ./solana-cli.nix { inherit system; };
           anchor = callPackage ./anchor.nix { inherit (pkgs) anchor; };
-          cargoBuildSbf = callPackage ./cargo-build-sbf.nix { };
+          cargoBuildSbf =
+            callPackage ./cargo-build-sbf.nix { inherit platformTools; };
           cargoWrapper =
             callPackage ./cargo-wrapper.nix { inherit (pkgs) cargo; };
           sbfEnvHook = makeSetupHook {
@@ -43,7 +44,6 @@
             nativeBuildInputs = [ sbfEnvHook ];
             packages = [ solanaCli anchor cargoWrapper cargoBuildSbf ];
             shellHook = ''
-              export PATH=${cargoBuildSbf}/bin''${PATH:+:}$PATH
               if [[ -n "''${HOME:-}" ]]; then
                 tools_dest="$HOME/.cache/solana/${platformTools.version}/platform-tools"
                 mkdir -p "$(dirname "$tools_dest")"
