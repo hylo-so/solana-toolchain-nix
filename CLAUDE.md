@@ -25,7 +25,7 @@ nix develop                   # Enter dev shell with all env vars set
 - **`flake.nix`** — Entry point. Uses `flake-parts` for multi-system support (aarch64-darwin, aarch64-linux, x86_64-darwin, x86_64-linux). Defines all packages and the default dev shell.
 - **`platform-tools.nix`** — Downloads pre-built Anza platform-tools binaries (Rust compiler + LLVM) per platform. Extracts `rust/` and `llvm/` directories.
 - **`solana-cli.nix`** — Downloads pre-built Solana CLI release binaries per platform. Extracts `bin/` directory and removes the bundled `cargo-build-sbf` and `cargo-test-sbf`.
-- **`cargo-build-sbf.nix`** — Builds `cargo-build-sbf` and `cargo-test-sbf` from the `anza-xyz/cargo-build-sbf` source and wraps both to pass `--skip-tools-install` and `--no-rustup-override`. The build fails when the source's default platform-tools version differs from `platform-tools.nix`.
+- **`cargo-build-sbf.nix`** — Builds `cargo-build-sbf` and `cargo-test-sbf` from the `anza-xyz/cargo-build-sbf` source. The build fails when the source's default platform-tools version differs from `platform-tools.nix`.
 - **`anchor.nix`** — Overrides the nixpkgs `anchor` package with a pinned version.
 - **`cargo-wrapper.nix`** — Wraps `cargo` to drop rustup `+toolchain` arguments.
 - **`sbf-env-hook.sh`** — Setup hook exporting `RUSTC`, `CC`, `AR`, `OBJDUMP`, `OBJCOPY` from `platform-tools`.
@@ -42,3 +42,5 @@ devShells.sbf = mkShell {
   inputsFrom = [ solana-nix.devShells.${system}.default ];
 };
 ```
+
+The dev shell has no `rustup`, so consumers pass `--no-rustup-override --skip-tools-install` to `cargo build-sbf` and `cargo test-sbf` themselves, for example `anchor build -- --no-rustup-override --skip-tools-install`.
